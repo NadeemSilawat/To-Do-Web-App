@@ -1,0 +1,24 @@
+type User @table {
+  displayName: String!
+  createdAt: Timestamp!
+  email: String
+  photoUrl: String
+}
+
+type Board @table {
+  name: String!
+  createdAt: Timestamp!
+  description: String
+  user: User
+}
+
+type Todo @table {
+  title: String!
+  isComplete: Boolean!
+  createdAt: Timestamp!
+  description: String
+  dueDate: Date
+  priority: String
+  user: User
+  board: Board
+}

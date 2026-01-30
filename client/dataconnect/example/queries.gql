@@ -1,0 +1,39 @@
+mutation CreateBoard($name: String!, $description: String!) @auth(level: USER) {
+  board_insert(data: {
+    name: $name,
+    description: $description,
+    createdAt_expr: "request.time",
+    userId_expr: "auth.uid"
+  })
+}
+
+query ListBoards @auth(level: USER) {
+  boards(where: {userId: {eq_expr: "auth.uid"}}) {
+    id
+    name
+    description
+    createdAt
+  }
+}
+
+mutation CreateTodo($boardId: UUID!, $title: String!, $description: String!, $dueDate: Date, $priority: String) @auth(level: USER) {
+  todo_insert(data: {
+    boardId: $boardId,
+    title: $title,
+    description: $description,
+    dueDate: $dueDate,
+    priority: $priority,
+    isComplete: false,
+    createdAt_expr: "request.time",
+    userId_expr: "auth.uid"
+  })
+}
+
+mutation UpdateTodo($id: UUID!, $isComplete: Boolean) @auth(level: USER) {
+  todo_update(
+    key: {id: $id}
+    data: {
+      isComplete: $isComplete
+    }
+  )
+}
